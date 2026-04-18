@@ -1,0 +1,66 @@
+
+
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  firstName String
+  lastName  String
+  phone     String?
+  location  String?
+  birthDate DateTime?
+  email     String   @unique
+  password  String   // Hashed!
+  createdAt DateTime @default(now())
+  bookings Booking[]
+   favorites Favorite[]
+}
+
+model Tour {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  location    String
+  price       Float
+  duration    String   // e.g., "3 Days"
+  imageUrl    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  createdBy   String
+  bookings Booking[]
+  favorites Favorite[]
+}
+model Booking {
+  id            String   @id @default(uuid())
+  userId        Int
+  tourId        String
+  user          User     @relation(fields: [userId], references: [id])
+  tour          Tour     @relation(fields: [tourId], references: [id])
+  
+  travelDate    DateTime // When they are going
+  guests        Int      @default(1)
+  totalPrice    Float
+  status        String   @default("pending") 
+  
+  createdAt     DateTime @default(now())
+}
+model Favorite {
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  tour      Tour     @relation(fields: [tourId], references: [id])
+  tourId    String
+  createdAt DateTime @default(now())
+
+  @@unique([userId, tourId]) 
+}
+
