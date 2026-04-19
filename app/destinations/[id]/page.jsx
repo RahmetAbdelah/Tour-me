@@ -115,7 +115,7 @@ export default function DestinationDetailPage() {
             <p className="text-slate-600 text-lg">{tour.location}</p>
           </div>
 
-          <div className="text-4xl font-bold text-blue-600">
+          <div className="text-4xl font-bold text-orange-500">
             ${tour.price} <span className="text-lg font-normal text-slate-500">per person</span>
           </div>
 
@@ -155,7 +155,7 @@ export default function DestinationDetailPage() {
                 onClick={handleBookNow} 
                 disabled={bookingLoading}
                 size="lg" 
-                className="w-full py-7 text-lg"
+                className="w-full py-7 text-lg bg-orange-500 hover:bg-orange-600 text-white"
               >
                 {bookingLoading ? "Processing Booking..." : `Confirm Booking - $${(tour.price * guests).toFixed(2)}`}
               </Button>

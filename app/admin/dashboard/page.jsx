@@ -572,7 +572,9 @@ export default function AdminDashboardPage() {
       {/* Sidebar */}
       <div className="w-64 bg-white border-r border-slate-200">
         <div className="p-6">
-          <h1 className="text-2xl font-bold text-slate-900">TourMe Admin</h1>
+          <div className="text-xl font-bold tracking-tight text-gray-900 flex items-center gap-1 cursor-pointer">
+            <span className="text-orange-500 underline decoration-2 underline-offset-4">Voyage</span>. Admin
+          </div>
         </div>
         <nav className="px-4 pb-4">
           <ul className="space-y-2">
@@ -582,7 +584,7 @@ export default function AdminDashboardPage() {
                   onClick={() => setActiveSection(item.name.toLowerCase())}
                   className={`w-full flex items-center px-4 py-3 text-left rounded-lg transition-colors ${
                     activeSection === item.name.toLowerCase()
-                      ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700'
+                      ? 'bg-orange-50 text-orange-500 border-r-2 border-orange-500'
                       : 'text-slate-700 hover:bg-slate-50'
                   }`}
                 >
@@ -596,7 +598,7 @@ export default function AdminDashboardPage() {
         <div className="px-4 mt-8">
           <Link href="/">
             <Button variant="outline" className="w-full">
-              Back to TourMe
+              Back to Voyage
             </Button>
           </Link>
         </div>

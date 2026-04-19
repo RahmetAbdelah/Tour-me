@@ -30,6 +30,33 @@ export default function DashboardPage() {
   const [realFavoriteTours, setFavoriteTours] = useState([])
   const [favoritesIds, setFavoritesIds] = useState(new Set())
   const [isLoading, setIsLoading] = useState(true)
+  
+  const [isEditingProfile, setIsEditingProfile] = useState(false)
+  const [profileForm, setProfileForm] = useState({ firstName: "", lastName: "", phone: "", location: "" })
+  
+  const handleSaveProfile = async () => {
+    try {
+      const res = await fetch("/api/user/profile", {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${localStorage.getItem("token")}`
+        },
+        body: JSON.stringify(profileForm)
+      });
+      const data = await res.json();
+      if (data.success) {
+        toast.success("Profile updated successfully");
+        setUser(data.user);
+        localStorage.setItem("user", JSON.stringify(data.user));
+        setIsEditingProfile(false);
+      } else {
+        toast.error("Failed to update profile");
+      }
+    } catch (err) {
+      toast.error("An error occurred");
+    }
+  };
 
   // Navigation config
   const navigation = [
@@ -52,7 +79,16 @@ export default function DashboardPage() {
         return
       }
 
-      if (storedUser) setUser(JSON.parse(storedUser))
+      if (storedUser) {
+        const parsed = JSON.parse(storedUser);
+        setUser(parsed);
+        setProfileForm({
+          firstName: parsed.firstName || "",
+          lastName: parsed.lastName || "",
+          phone: parsed.phone || "",
+          location: parsed.location || ""
+        });
+      }
 
       try {
         const toursRes = await fetch("/api/admin/tours")
@@ -109,7 +145,7 @@ export default function DashboardPage() {
               <Card>
                 <CardContent className="p-6">
                   <div className="flex items-center">
-                    <FontAwesomeIcon icon={faCalendarAlt} className="h-6 w-6 text-blue-600" />
+                    <FontAwesomeIcon icon={faCalendarAlt} className="h-6 w-6 text-orange-500" />
                     <div className="ml-4">
                       <p className="text-sm font-medium text-slate-600">Upcoming Trips</p>
                       <p className="text-2xl font-bold">{realBookings.length}</p>
@@ -236,24 +272,95 @@ case 'explore':
       case 'profile':
         return (
           <div className="space-y-6">
-            <h2 className="text-2xl font-semibold">Profile Settings</h2>
+            <div className="flex items-center justify-between">
+              <h2 className="text-2xl font-semibold">Profile Settings</h2>
+              <Button onClick={() => isEditingProfile ? handleSaveProfile() : setIsEditingProfile(true)} className="bg-orange-500 hover:bg-orange-600 text-white">
+                {isEditingProfile ? "Save Changes" : "Edit Profile"}
+              </Button>
+            </div>
             <Card>
               <CardHeader><CardTitle>Personal Information</CardTitle></CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid gap-4 md:grid-cols-2">
                   <div className="space-y-1">
                     <label className="text-sm font-medium text-slate-500">First Name</label>
-                    <p className="text-lg font-medium">{user?.firstName}</p>
+                    {isEditingProfile ? (
+                      <input 
+                        className="w-full p-2 border rounded" 
+                        value={profileForm.firstName} 
+                        onChange={(e) => setProfileForm({...profileForm, firstName: e.target.value})} 
+                      />
+                    ) : (
+                      <p className="text-lg font-medium">{user?.firstName}</p>
+                    )}
                   </div>
                   <div className="space-y-1">
                     <label className="text-sm font-medium text-slate-500">Last Name</label>
-                    <p className="text-lg font-medium">{user?.lastName}</p>
+                    {isEditingProfile ? (
+                      <input 
+                        className="w-full p-2 border rounded" 
+                        value={profileForm.lastName} 
+                        onChange={(e) => setProfileForm({...profileForm, lastName: e.target.value})} 
+                      />
+                    ) : (
+                      <p className="text-lg font-medium">{user?.lastName}</p>
+                    )}
                   </div>
                 </div>
-                <div className="space-y-1">
-                  <label className="text-sm font-medium text-slate-500">Email Address</label>
-                  <p className="text-lg font-medium">{user?.email}</p>
+                <div className="grid gap-4 md:grid-cols-2">
+                  <div className="space-y-1">
+                    <label className="text-sm font-medium text-slate-500">Phone</label>
+                    {isEditingProfile ? (
+                      <input 
+                        className="w-full p-2 border rounded" 
+                        value={profileForm.phone} 
+                        onChange={(e) => setProfileForm({...profileForm, phone: e.target.value})} 
+                      />
+                    ) : (
+                      <p className="text-lg font-medium">{user?.phone || 'Not provided'}</p>
+                    )}
+                  </div>
+                  <div className="space-y-1">
+                    <label className="text-sm font-medium text-slate-500">Location</label>
+                    {isEditingProfile ? (
+                      <input 
+                        className="w-full p-2 border rounded" 
+                        value={profileForm.location} 
+                        onChange={(e) => setProfileForm({...profileForm, location: e.target.value})} 
+                      />
+                    ) : (
+                      <p className="text-lg font-medium">{user?.location || 'Not provided'}</p>
+                    )}
+                  </div>
                 </div>
+                <div className="space-y-1 mt-4">
+                  <label className="text-sm font-medium text-slate-500">Email Address (Cannot be changed)</label>
+                  <p className="text-lg font-medium text-slate-400">{user?.email}</p>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )
+
+      case 'settings':
+        return (
+          <div className="space-y-6">
+            <h2 className="text-2xl font-semibold">Account Settings</h2>
+            <Card>
+              <CardHeader>
+                <CardTitle>Change Password</CardTitle>
+                <CardDescription>Ensure your account is using a long, random password to stay secure.</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-1">
+                  <label className="text-sm font-medium text-slate-500">Current Password</label>
+                  <input type="password" placeholder="••••••••" className="w-full p-2 border rounded" />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-sm font-medium text-slate-500">New Password</label>
+                  <input type="password" placeholder="••••••••" className="w-full p-2 border rounded" />
+                </div>
+                <Button className="bg-orange-500 hover:bg-orange-600 text-white">Update Password</Button>
               </CardContent>
             </Card>
           </div>
@@ -269,7 +376,9 @@ case 'explore':
       {/* Sidebar */}
       <div className="w-64 bg-white border-r border-slate-200 flex flex-col fixed h-full">
         <div className="p-6">
-          <h1 className="text-2xl font-bold text-blue-700">TourMe</h1>
+          <div className="text-xl font-bold tracking-tight text-gray-900 flex items-center gap-1 cursor-pointer">
+            <span className="text-orange-500 underline decoration-2 underline-offset-4">Voyage</span>.
+          </div>
         </div>
         <nav className="px-4 flex-1">
           <ul className="space-y-2">
@@ -279,7 +388,7 @@ case 'explore':
                   onClick={() => setActiveSection(item.name.toLowerCase())}
                   className={`w-full flex items-center px-4 py-3 text-left rounded-lg transition-colors ${
                     activeSection === item.name.toLowerCase()
-                      ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700'
+                      ? 'bg-orange-50 text-orange-500 border-r-2 border-orange-500'
                       : 'text-slate-700 hover:bg-slate-50'
                   }`}
                 >
@@ -304,7 +413,7 @@ case 'explore':
             <h1 className="text-2xl font-semibold capitalize">{activeSection}</h1>
             <div className="flex items-center gap-4">
               <span className="text-sm text-slate-600">Welcome, {user?.firstName}!</span>
-              <div className="h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white text-sm font-medium">
+              <div className="h-8 w-8 rounded-full bg-orange-500 flex items-center justify-center text-white text-sm font-medium">
                 {user?.firstName?.[0]}
               </div>
             </div>

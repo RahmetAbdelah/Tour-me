@@ -1,438 +1,264 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPlane,
-  faDollarSign,
-  faHeadset,
-  faStar,
-  faArrowRight,
-  faLocationDot,
-} from "@fortawesome/free-solid-svg-icons";
-import { Button } from "@/components/ui/button";
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { 
+  Search, MapPin, Calendar, CheckCircle2, 
+  ArrowRight, Play, Quote, Users, Map, 
+  Award, Globe, Menu, Heart, Star, ChevronLeft, ChevronRight, X 
+} from 'lucide-react';
 
-const featuredDestinations = [
-  {
-    id: 1,
-    name: "Lalibela",
-    description: "Step into a world of rock-hewn churches, sacred history, and unforgettable mountain views in northern Ethiopia.",
-    price: "From $950",
-    image: "https://images.unsplash.com/photo-1601633519842-120610f443b7?q=80&w=800&auto=format&fit=crop", // Lalibela vibe
-  },
-  {
-    id: 2,
-    name: "Simien Mountains",
-    description: "Hike dramatic cliffs, spot gelada baboons, and watch sunrise over Ethiopia's most iconic highland landscape.",
-    price: "From $1,100",
-    image: "https://images.unsplash.com/photo-1533106418984-83a1c48abd5d?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    id: 3,
-    name: "Addis Ababa",
-    description: "Discover vibrant markets, modern culture, and rich coffee traditions in Ethiopia's bustling capital city.",
-    price: "From $780",
-    image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=800&auto=format&fit=crop",
-  },
-  {
-    id: 4,
-    name: "Danakil Depression",
-    description: "Explore surreal salt flats, neon mineral pools, and one of the hottest places on Earth for an adventure like no other.",
-    price: "From $1,300",
-    image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=800&auto=format&fit=crop",
-  },
-];
+export default function EthiopiaTravelFinal() {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-const features = [
-  {
-    title: "Local Ethiopian Guides",
-    description: "Travel with experts who know the culture, food, and hidden gems of every region.",
-    icon: faPlane,
-    color: "var(--color-eth-green)",
-  },
-  {
-    title: "Flexible Packages",
-    description: "Customize your itinerary with comfortable stays, cultural tours, and authentic experiences.",
-    icon: faDollarSign,
-    color: "var(--color-eth-yellow)",
-  },
-  {
-    title: "24/7 Travel Support",
-    description: "Our team is available throughout your journey to make every moment smooth and stress-free.",
-    icon: faHeadset,
-    color: "var(--color-eth-red)",
-  },
-  {
-    title: "Trusted Experiences",
-    description: "Every tour is curated with real traveler reviews and local insight for authentic trips.",
-    icon: faStar,
-    color: "var(--color-eth-coffee)",
-  },
-];
-
-const experienceCategories = [
-  "Cultural Experiences",
-  "City Escapes",
-  "Mountain Trekking",
-  "Wildlife Adventures",
-];
-
-const experienceHighlights = [
-  {
-    category: "Cultural Experiences",
-    title: "Lalibela Church Tour",
-    summary: "Explore ancient rock-hewn churches, witness timeless traditions, and discover Ethiopia's spiritual heritage.",
-    image: "https://images.unsplash.com/photo-1522322534648-6c85bed45aa4?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    category: "City Escapes",
-    title: "Addis Ababa City Life",
-    summary: "Stroll vibrant markets, sip freshly roasted coffee, and soak in modern culture in the capital.",
-    image: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    category: "Mountain Trekking",
-    title: "Simien Mountains Trek",
-    summary: "Hike dramatic cliffs, meet endemic wildlife, and see sunrise over breathtaking highland valleys.",
-    image: "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?q=80&w=1200&auto=format&fit=crop",
-  },
-  {
-    category: "Wildlife Adventures",
-    title: "Danakil Salt Flat Safari",
-    summary: "Experience surreal landscapes, salt caravans, and one of Africa's most unique natural wonders.",
-    image: "https://images.unsplash.com/photo-1516815246206-0fae248caffd?q=80&w=1200&auto=format&fit=crop",
-  },
-];
-
-// Variants for Framer Motion animations
-const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
-};
-
-const staggerContainer = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { staggerChildren: 0.2 },
-  },
-};
-
-export default function LandingPage() {
-  const [selectedExperience, setSelectedExperience] = useState(
-    experienceCategories[0]
-  );
-
-  const activeHighlight = experienceHighlights.find(
-    (h) => h.category === selectedExperience
-  );
+  // Smooth scroll function for the Nav
+  const scrollToSection = (id,string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+    setIsMenuOpen(false);
+  };
 
   return (
-    <div className="min-h-screen bg-[var(--color-eth-light)] text-slate-900 selection:bg-[var(--color-eth-yellow)] selection:text-slate-900">
-      {/* Header */}
-      <header className="absolute inset-x-0 top-0 z-50">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-6 lg:px-8">
-          <div className="flex items-center gap-3 text-2xl font-bold text-white tracking-tight">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[var(--color-eth-green)] via-[var(--color-eth-yellow)] to-[var(--color-eth-red)] shadow-lg">
-              <span className="text-white text-lg">🌍</span>
-            </div>
-            TourMe <span className="text-[var(--color-eth-yellow)]">Ethiopia</span>
-          </div>
-          <nav className="hidden items-center gap-10 md:flex text-sm font-semibold text-white/90">
-            <Link href="#destinations" className="hover:text-white transition-colors">
-              Destinations
-            </Link>
-            <Link href="#experiences" className="hover:text-white transition-colors">
-              Experiences
-            </Link>
-            <Link href="#why" className="hover:text-white transition-colors">
-              Why TourMe
-            </Link>
-          </nav>
-          <Link
-            href="/auth/login?role=user"
-            className="rounded-full bg-white/10 backdrop-blur-md border border-white/20 px-6 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-white hover:text-slate-900 transition-all"
+    <div className="min-h-screen bg-white font-sans text-slate-800 antialiased overflow-x-hidden">
+      
+      {/* 1. NAVIGATION BAR - Now Navigable */}
+      <nav className="fixed top-0 w-full z-[100] bg-white border-b border-gray-100 h-16 flex items-center">
+        <div className="max-w-7xl mx-auto px-6 w-full flex items-center justify-between">
+          <div 
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="text-xl font-bold tracking-tight text-gray-900 flex items-center gap-1 cursor-pointer"
           >
-            Sign In
-          </Link>
+            <span className="text-orange-500 underline decoration-2 underline-offset-4">Tour me </span>.
+          </div>
+          
+          <div className="hidden lg:flex items-center gap-8 font-medium text-[13px] uppercase tracking-wider text-gray-600">
+            <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="text-orange-500">Home</button>
+            <button onClick={() => scrollToSection('destinations')} className="hover:text-orange-500 transition">Destinations</button>
+            <button onClick={() => scrollToSection('about')} className="hover:text-orange-500 transition">About</button>
+            <button onClick={() => scrollToSection('reviews')} className="hover:text-orange-500 transition">Reviews</button>
+          </div>
+          
+          <div className="flex items-center gap-4">
+            <Link href="/dashboard" className="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 rounded-md transition-all font-bold text-[12px] uppercase tracking-wide">
+              Book Now
+            </Link>
+            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="lg:hidden text-gray-900">
+              {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
+          </div>
         </div>
-      </header>
 
-      <main>
-        {/* Hero Section */}
-        <section className="relative h-[95vh] min-h-[700px] overflow-hidden bg-slate-950 flex items-center">
-          <div className="absolute inset-0">
-            <Image
-              src="https://images.unsplash.com/photo-1623038455007-891466ff6016?q=80&w=2000&auto=format&fit=crop"
-              alt="Ethiopian landscape"
-              fill
-              className="object-cover opacity-80"
-              priority
-            />
-            {/* Gradient overlay for readability, fading out near bottom */}
-            <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-900/50 to-slate-950/90" />
+        {isMenuOpen && (
+          <div className="absolute top-16 left-0 w-full bg-white border-b border-gray-100 p-6 flex flex-col gap-4 lg:hidden shadow-xl">
+            <button onClick={() => scrollToSection('destinations')} className="text-left font-bold uppercase text-[12px]">Destinations</button>
+            <button onClick={() => scrollToSection('about')} className="text-left font-bold uppercase text-[12px]">About</button>
+            <button onClick={() => scrollToSection('reviews')} className="text-left font-bold uppercase text-[12px]">Reviews</button>
           </div>
+        )}
+      </nav>
 
-          <div className="relative mx-auto max-w-7xl px-6 lg:px-8 w-full">
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              variants={staggerContainer}
-              className="max-w-3xl"
-            >
-              <motion.span
-                variants={fadeUp}
-                className="inline-flex items-center gap-2 rounded-full bg-[var(--color-eth-red)]/20 px-4 py-1.5 text-sm font-bold uppercase tracking-[0.2em] text-[var(--color-eth-yellow)] ring-1 ring-[var(--color-eth-red)]/50 backdrop-blur-md"
-              >
-                <FontAwesomeIcon icon={faLocationDot} /> Discover The Land of Origins
-              </motion.span>
+      {/* 2. HERO SECTION - Full Screen, Video Only, No Search Bar */}
+      <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
+        <iframe
+          src="https://www.youtube.com/embed/1xuzWBxlwCk?autoplay=1&mute=1&controls=0&loop=1&playlist=1xuzWBxlwCk&showinfo=0&rel=0&disablekb=1"
+          className="absolute inset-0 w-full h-full object-cover scale-[1.5] md:scale-[1.25] z-0 pointer-events-none"
+          allow="autoplay; encrypted-media"
+          frameBorder="0"
+        />
+        
 
-              <motion.h1
-                variants={fadeUp}
-                className="mt-8 text-5xl font-extrabold tracking-tight text-white sm:text-7xl lg:text-[5.5rem] leading-[1.1]"
-              >
-                Experience Ethiopia like a{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-eth-green)] via-[var(--color-eth-yellow)] to-[var(--color-eth-red)]">
-                  local.
-                </span>
-              </motion.h1>
+        <div className="absolute inset-0 bg-black/20 z-10" />
 
-              <motion.p
-                variants={fadeUp}
-                className="mt-6 text-xl leading-8 text-slate-300 max-w-2xl font-light"
-              >
-                From ancient rock-hewn churches to dramatic mountain peaks, unlock
-                authentic journeys tailored just for you.
-              </motion.p>
+        <div className="relative z-20 text-center px-4 max-w-4xl">
+          <h1 className="text-2xl md:text-4xl lg:text-6xl font-bold mb-8 tracking-tight leading-tight text-white drop-shadow-lg">
+            Ready For Your <br /> Next Adventure
+          </h1>
+          
+          <button onClick={() => scrollToSection('destinations')} className="bg-orange-500 hover:bg-orange-600 text-white px-10 py-4 rounded-full text-sm font-bold transition-all shadow-2xl shadow-orange-500/40 hover:scale-105 uppercase tracking-widest">
+            Get Started
+          </button>
+        </div>
+      </section>
 
-              <motion.div variants={fadeUp} className="mt-10 flex flex-wrap gap-4">
-                <Link href="/auth/login?role=user">
-                  <Button
-                    size="lg"
-                    className="h-14 rounded-full bg-[var(--color-eth-green)] px-8 text-lg font-semibold text-white hover:bg-[#007A34] shadow-xl shadow-[var(--color-eth-green)]/30 border-none"
-                  >
-                    Start Your Journey <FontAwesomeIcon icon={faArrowRight} className="ml-2" />
-                  </Button>
-                </Link>
-                <Link
-                  href="#destinations"
-                  className="inline-flex h-14 items-center justify-center rounded-full border border-white/30 bg-white/5 backdrop-blur-md px-8 text-lg font-semibold text-white hover:bg-white hover:text-slate-900 transition-all"
-                >
-                  Explore Destinations
-                </Link>
-              </motion.div>
-            </motion.div>
-          </div>
-        </section>
-
-        {/* Why TourMe Section */}
-        <section id="why" className="py-24 sm:py-32 relative overflow-hidden">
-          {/* Subtle background decoration */}
-          <div className="absolute top-0 right-0 -mr-40 -mt-40 w-96 h-96 rounded-full bg-[var(--color-eth-yellow)]/10 blur-3xl" />
-          <div className="absolute bottom-0 left-0 -ml-40 -mb-40 w-96 h-96 rounded-full bg-[var(--color-eth-green)]/10 blur-3xl" />
-
-          <div className="mx-auto max-w-7xl px-6 lg:px-8 relative z-10">
-            <div className="mx-auto max-w-2xl text-center">
-              <h2 className="text-sm font-bold uppercase tracking-[0.24em] text-[var(--color-eth-red)]">
-                Why TourMe Ethiopia
-              </h2>
-              <p className="mt-4 text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
-                Travel made effortless and unforgettable.
-              </p>
+      {/* 3. CATEGORY ICONS */}
+      <section className="max-w-7xl mx-auto px-6 py-12">
+        <div className="flex justify-between items-center gap-4 overflow-x-auto no-scrollbar">
+          {[
+            { name: "Hiking", img: "https://images.unsplash.com/photo-1551632811-561732d1e306?w=100&h=100&fit=crop" },
+            { name: "Religion", img: "https://images.unsplash.com/photo-1597807132214-cd7d59a77714?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZXRoaW9waWFuJTIwc2l0ZXN8ZW58MHx8MHx8fDA%3D" },
+            { name: "Wildlife", img: "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=100&h=100&fit=crop" },
+            { name: "Culture", img: "https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=100&h=100&fit=crop" },
+            { name: "History", img: "https://images.unsplash.com/photo-1596401057633-5310d5798d1d?w=100&h=100&fit=crop" },
+            { name: "Nature", img: "https://images.unsplash.com/photo-1571239328905-555e092cc632?w=100&h=100&fit=crop" }
+          ].map((cat, i) => (
+            <div key={i} className="flex-shrink-0 text-center group cursor-pointer">
+              <div className="w-16 h-16 rounded-full overflow-hidden mb-2 p-1 border border-transparent group-hover:border-orange-500 transition-all shadow-sm">
+                <img src={cat.img} className="w-full h-full object-cover rounded-full" alt="" />
+              </div>
+              <p className="font-semibold text-[12px] text-gray-600 group-hover:text-orange-500">{cat.name}</p>
             </div>
+          ))}
+        </div>
+      </section>
 
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-100px" }}
-              variants={staggerContainer}
-              className="mt-20 grid gap-8 sm:grid-cols-2 lg:grid-cols-4"
-            >
-              {features.map((feature, idx) => (
-                <motion.div
-                  key={feature.title}
-                  variants={fadeUp}
-                  className="group relative rounded-[2rem] bg-white p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] ring-1 ring-slate-100 transition-all hover:shadow-[0_8px_40px_rgb(0,0,0,0.08)] hover:-translate-y-2"
-                >
-                  <div
-                    className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-2xl text-white shadow-lg transition-transform group-hover:scale-110"
-                    style={{ backgroundColor: feature.color, boxShadow: `0 10px 25px -5px ${feature.color}60` }}
-                  >
-                    <FontAwesomeIcon icon={feature.icon} className="h-7 w-7" />
-                  </div>
-                  <h3 className="text-xl font-bold text-slate-900">{feature.title}</h3>
-                  <p className="mt-4 text-slate-600 leading-relaxed font-medium">
-                    {feature.description}
-                  </p>
-                </motion.div>
-              ))}
-            </motion.div>
+      {/* 4. PROMO SECTION - ID: about */}
+      <section id="about" className="max-w-7xl mx-auto px-6 py-10 scroll-mt-20">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-2xl overflow-hidden bg-gray-50 border border-gray-100">
+          <div className="p-10 lg:p-16 flex flex-col justify-center">
+            <span className="text-orange-500 font-bold uppercase tracking-widest text-[10px] mb-3">About Voyage</span>
+            <h2 className="text-3xl font-bold text-gray-900 mb-6 leading-tight uppercase">Explore the world with our expert guides</h2>
+            <p className="text-gray-500 mb-8 leading-relaxed text-[14px]">
+              We provide authentic Ethiopian experiences. From the mountains of Simien to the Danakil Depression, we guide you safely.
+            </p>
+            <div className="grid grid-cols-2 gap-4 mb-8">
+              <div className="flex items-center gap-2 text-[13px] font-semibold">
+                <CheckCircle2 className="text-orange-500" size={16} />
+                <span>Expert Guides</span>
+              </div>
+              <div className="flex items-center gap-2 text-[13px] font-semibold">
+                <CheckCircle2 className="text-orange-500" size={16} />
+                <span>Luxury Tours</span>
+              </div>
+            </div>
+            <button className="bg-orange-500 text-white px-6 py-2.5 rounded text-[11px] font-bold w-fit uppercase tracking-wider">
+              Learn More
+            </button>
           </div>
-        </section>
+          <div className="relative h-64 lg:h-auto">
+            <img src="https://images.unsplash.com/photo-1523805009345-7448845a9e53?q=80" className="w-full h-full object-cover" alt="" />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div className="w-14 h-14 bg-white/90 rounded-full flex items-center justify-center shadow-lg cursor-pointer hover:scale-105 transition">
+                <Play className="text-orange-500 fill-orange-500" size={20} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-        {/* Interactive Experiences Section */}
-        <section id="experiences" className="bg-slate-950 py-24 sm:py-32 text-white relative">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
-              <div>
-                <h2 className="text-sm font-bold uppercase tracking-[0.24em] text-[var(--color-eth-yellow)]">
-                  Curated Experiences
-                </h2>
-                <p className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">
-                  Find your perfect Ethiopian adventure.
-                </p>
-                <p className="mt-6 text-lg leading-8 text-slate-400 font-light">
-                  Whether you're looking for deep cultural immersion, thrilling mountain treks, or city vibes, we have it all.
-                </p>
+      {/* 5. DESTINATION GRID - ID: destinations */}
+      <section id="destinations" className="max-w-[1600px] mx-auto px-4 md:px-12 py-16 scroll-mt-20">
+        <div className="flex justify-between items-end mb-10">
+          <div>
+            <span className="text-orange-500 font-bold uppercase tracking-widest text-[10px]">Top Picks</span>
+            <h2 className="text-2xl font-bold mt-1 text-gray-900 uppercase">Select Destination</h2>
+          </div>
+          <div className="flex gap-2">
+            <button className="p-2 border border-gray-200 rounded hover:bg-orange-500 hover:text-white transition"><ChevronLeft size={16} /></button>
+            <button className="p-2 border border-gray-200 rounded hover:bg-orange-500 hover:text-white transition"><ChevronRight size={16} /></button>
+          </div>
+        </div>
 
-                <div className="mt-10 flex flex-col gap-3">
-                  {experienceCategories.map((category) => (
-                    <button
-                      key={category}
-                      onClick={() => setSelectedExperience(category)}
-                      className={`text-left px-6 py-5 rounded-2xl transition-all font-semibold text-lg border ${
-                        selectedExperience === category
-                          ? "bg-white text-slate-900 border-white shadow-xl scale-105"
-                          : "bg-transparent text-slate-400 border-slate-800 hover:border-slate-600 hover:text-white hover:bg-white/5"
-                      }`}
-                    >
-                      {category}
-                    </button>
-                  ))}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[
+            { name: "Rock-Hewn Churches", loc: "Lalibela", price: "$450", img: "https://images.unsplash.com/photo-1543888512-32b57563870e?w=500" },
+            { name: "Simien Mountains", loc: "Gondar", price: "$320", img: "https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=500" },
+            { name: "Blue Nile Falls", loc: "Bahir Dar", price: "$180", img: "https://images.unsplash.com/photo-1571239328905-555e092cc632?w=500" },
+            { name: "Fasil Ghebbi", loc: "Gondar", price: "$250", img: "https://images.unsplash.com/photo-1596401057633-5310d5798d1d?w=500" },
+            { name: "Erta Ale Volcano", loc: "Afar", price: "$600", img: "https://images.unsplash.com/photo-1627315560341-94578f7f509e?w=500" },
+            { name: "Omo Valley", loc: "Jinka", price: "$550", img: "https://images.unsplash.com/photo-1518331301490-264663675f3a?w=500" }
+          ].map((dest, i) => (
+            <div key={i} className="group bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all">
+              <div className="h-56 overflow-hidden relative">
+                <img src={dest.img} className="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="" />
+                <div className="absolute top-4 right-4 bg-white/80 p-1.5 rounded-full cursor-pointer hover:bg-orange-500 hover:text-white transition">
+                  <Heart size={16} />
                 </div>
               </div>
-
-              {/* Image Preview Area */}
-              <div className="relative h-[600px] w-full rounded-[2.5rem] overflow-hidden ring-1 ring-white/10 shadow-2xl">
-                <AnimatePresence mode="wait">
-                  {activeHighlight && (
-                    <motion.div
-                      key={activeHighlight.title}
-                      initial={{ opacity: 0, scale: 1.05 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ duration: 0.5, ease: "easeInOut" }}
-                      className="absolute inset-0"
-                    >
-                      <Image
-                        src={activeHighlight.image}
-                        alt={activeHighlight.title}
-                        fill
-                        className="object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/20 to-transparent" />
-                      
-                      <div className="absolute bottom-0 left-0 p-10">
-                        <motion.span 
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.2 }}
-                          className="inline-block px-3 py-1 bg-[var(--color-eth-green)] text-white text-sm font-bold rounded-full mb-4"
-                        >
-                          {activeHighlight.category}
-                        </motion.span>
-                        <motion.h3 
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.3 }}
-                          className="text-3xl font-bold text-white"
-                        >
-                          {activeHighlight.title}
-                        </motion.h3>
-                        <motion.p 
-                          initial={{ opacity: 0, y: 10 }}
-                          animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 0.4 }}
-                          className="mt-3 text-slate-300 text-lg leading-relaxed max-w-md"
-                        >
-                          {activeHighlight.summary}
-                        </motion.p>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+              <div className="p-5">
+                <div className="flex justify-between items-center mb-1">
+                  <h3 className="font-bold text-gray-900 text-[16px]">{dest.name}</h3>
+                  <span className="text-orange-500 font-bold text-[14px]">{dest.price}</span>
+                </div>
+                <div className="flex items-center text-gray-400 text-[12px] font-medium mb-5">
+                  <MapPin size={12} className="mr-1" /> {dest.loc}
+                </div>
+                <button className="w-full border border-gray-900 text-gray-900 group-hover:bg-orange-500 group-hover:border-orange-500 group-hover:text-white py-2.5 rounded font-bold text-[11px] transition-all tracking-wider uppercase">
+                  Explore Now
+                </button>
               </div>
             </div>
-          </div>
-        </section>
+          ))}
+        </div>
+      </section>
 
-        {/* Featured Destinations */}
-        <section id="destinations" className="py-24 sm:py-32">
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-              <div className="max-w-2xl">
-                <h2 className="text-sm font-bold uppercase tracking-[0.24em] text-[var(--color-eth-green)]">
-                  Top Destinations
-                </h2>
-                <p className="mt-4 text-4xl font-extrabold tracking-tight text-slate-900 sm:text-5xl">
-                  Places you can't miss.
+      {/* 6. STATS BAR */}
+      <section className="bg-gray-50 py-16 border-y border-gray-100">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          {[
+            { label: "HAPPY CLIENTS", value: "12K+" },
+            { label: "DESTINATIONS", value: "350+" },
+            { label: "TOUR GUIDES", value: "80+" },
+            { label: "AWARDS WON", value: "25+" }
+          ].map((stat, i) => (
+            <div key={i}>
+              <div className="text-3xl font-bold text-gray-900 mb-1">{stat.value}</div>
+              <div className="text-[10px] font-bold text-orange-500 tracking-widest">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* 7. TESTIMONIALS - ID: reviews */}
+      <section id="reviews" className="py-20 bg-white scroll-mt-20">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <span className="text-orange-500 font-bold uppercase text-[10px] tracking-widest">Reviews</span>
+          <h2 className="text-2xl font-bold mt-1 mb-12 uppercase">What They Say</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {[1, 2, 3].map((_, i) => (
+              <div key={i} className="bg-white p-8 rounded-xl border border-gray-100 shadow-sm text-left">
+                <Quote className="text-orange-100 mb-4" size={30} />
+                <p className="text-gray-500 text-[13px] italic mb-6 leading-relaxed">
+                  &aposThe spiritual energy of Ethiopia was captured perfectly by the guides. Flawless planning.&apos
                 </p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-orange-100 rounded-full" />
+                  <div>
+                    <h4 className="font-bold text-[13px]">Abel Tadesse</h4>
+                    <p className="text-[11px] text-gray-400">Traveler</p>
+                  </div>
+                </div>
               </div>
-              <Link href="/destinations" className="text-[var(--color-eth-green)] font-semibold hover:text-[#007A34] flex items-center gap-2">
-                View all destinations <FontAwesomeIcon icon={faArrowRight} />
-              </Link>
-            </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-            <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-              {featuredDestinations.map((destination) => (
-                <motion.div
-                  key={destination.id}
-                  whileHover={{ y: -10 }}
-                  className="group flex flex-col overflow-hidden rounded-[2rem] bg-white shadow-xl ring-1 ring-slate-100"
-                >
-                  <div className="relative aspect-[4/5] overflow-hidden">
-                    <Image
-                      src={destination.image}
-                      alt={destination.name}
-                      fill
-                      className="object-cover transition-transform duration-700 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent opacity-80" />
-                    <div className="absolute bottom-6 left-6 right-6">
-                      <h3 className="text-2xl font-bold text-white mb-1">
-                        {destination.name}
-                      </h3>
-                      <p className="text-[var(--color-eth-yellow)] font-semibold">
-                        {destination.price}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex flex-1 flex-col justify-between p-6">
-                    <p className="text-slate-600 font-medium leading-relaxed line-clamp-3">
-                      {destination.description}
-                    </p>
-                    <Link href="/auth/login?role=user" className="mt-6">
-                      <Button className="w-full rounded-xl bg-slate-900 text-white hover:bg-[var(--color-eth-red)] transition-colors py-6 text-md font-semibold">
-                        Book Now
-                      </Button>
-                    </Link>
-                  </div>
-                </motion.div>
-              ))}
+      {/* 8. FOOTER */}
+      <footer className="bg-gray-950 text-gray-400 pt-20 pb-8">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+            <div>
+              <h3 className="text-white font-bold text-2xl mb-6">Tourme  <span className="text-orange-500">.</span></h3>
+              <p className="text-[13px] leading-relaxed mb-6">Leading Ethiopias boutique travel experiences with 15 years of expertise.</p>
+            </div>
+            <div>
+              <h4 className="text-white font-bold mb-6 text-[11px] uppercase tracking-widest">Links</h4>
+              <ul className="space-y-3 text-[12px] font-medium">
+                <li className="hover:text-orange-500 cursor-pointer transition">About Us</li>
+                <li className="hover:text-orange-500 cursor-pointer transition">Destinations</li>
+                <li className="hover:text-orange-500 cursor-pointer transition">Guides</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-white font-bold mb-6 text-[11px] uppercase tracking-widest">Support</h4>
+              <ul className="space-y-3 text-[12px] font-medium">
+                <li className="hover:text-orange-500 cursor-pointer transition">Help Center</li>
+                <li className="hover:text-orange-500 cursor-pointer transition">Privacy</li>
+                <li className="hover:text-orange-500 cursor-pointer transition">Terms</li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="text-white font-bold mb-6 text-[11px] uppercase tracking-widest">Newsletter</h4>
+              <div className="flex border-b border-gray-800 pb-2">
+                <input type="email" placeholder="Email" className="bg-transparent text-[12px] outline-none w-full" />
+                <button className="text-orange-500"><ArrowRight size={16} /></button>
+              </div>
             </div>
           </div>
-        </section>
-      </main>
-
-      {/* Footer */}
-      <footer className="bg-slate-950 py-16 text-slate-300 border-t border-white/10">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
-          <div className="flex items-center gap-3 text-xl font-bold text-white">
-            <span className="text-2xl">🌍</span> TourMe
-          </div>
-          <p className="text-sm text-slate-500 font-medium">
-            © {new Date().getFullYear()} TourMe Ethiopia. Travel responsibly.
-          </p>
-          <div className="flex gap-6 text-sm font-semibold">
-            <Link href="/auth/login?role=admin" className="hover:text-white transition-colors">
-              Admin Access
-            </Link>
-            <Link href="/auth/login?role=user" className="hover:text-white transition-colors">
-              User Login
-            </Link>
+          <div className="text-center text-[10px] font-medium tracking-[0.2em] pt-8 border-t border-gray-900 opacity-50 uppercase">
+            © 2026 Tourme TRAVEL AGENCY.
           </div>
         </div>
       </footer>

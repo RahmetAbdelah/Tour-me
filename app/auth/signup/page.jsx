@@ -162,8 +162,11 @@ export default function SignupPage() {
   return (
     <main className="min-h-screen bg-slate-50 text-slate-950 flex items-center justify-center px-4 py-16">
       <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle>Create your TourMe account</CardTitle>
+        <CardHeader className="text-center pb-2">
+          <div className="text-2xl font-bold tracking-tight text-gray-900 flex justify-center items-center gap-1 mb-4">
+            <span className="text-orange-500 underline decoration-2 underline-offset-4">Voyage</span>.
+          </div>
+          <CardTitle>Create your account</CardTitle>
           <CardDescription>
             Enter your details below to register a new account.
           </CardDescription>
@@ -326,7 +329,7 @@ export default function SignupPage() {
               ) : null}
             </div>
 
-            <Button type="submit">Create account</Button>
+            <Button type="submit" className="w-full bg-orange-500 hover:bg-orange-600 text-white">Create account</Button>
           </form>
           <Toaster />
 

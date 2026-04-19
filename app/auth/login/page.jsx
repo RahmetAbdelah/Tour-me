@@ -86,8 +86,11 @@ export default function LoginPage() {
   return (
     <main className="min-h-screen bg-slate-50 text-slate-950 flex items-center justify-center px-4 py-16">
       <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle>{role === "admin" ? "Admin Login" : "Login to TourMe"}</CardTitle>
+        <CardHeader className="text-center pb-2">
+          <div className="text-2xl font-bold tracking-tight text-gray-900 flex justify-center items-center gap-1 mb-4">
+            <span className="text-orange-500 underline decoration-2 underline-offset-4">Voyage</span>.
+          </div>
+          <CardTitle>{role === "admin" ? "Admin Login" : "Welcome back"}</CardTitle>
           <CardDescription>
             {role === "admin"
               ? "Sign in with your admin credentials to continue."
@@ -147,7 +150,7 @@ export default function LoginPage() {
               </Link>
             </div>
 
-            <Button type="submit">Sign in</Button>
+            <Button type="submit" className="w-full bg-orange-500 hover:bg-orange-600 text-white">Sign in</Button>
              <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <span className="w-full border-t" />

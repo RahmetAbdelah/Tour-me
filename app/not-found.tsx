@@ -19,10 +19,10 @@ export default function NotFoundPage() {
           </p>
 
           <div className="flex gap-4 justify-center">
-            <Button asChild>
+            <Button >
               <Link href="/">Go Home</Link>
             </Button>
-            <Button variant="outline" asChild>
+            <Button variant="outline" >
               <Link href="/auth/login">Sign In</Link>
             </Button>
           </div>
