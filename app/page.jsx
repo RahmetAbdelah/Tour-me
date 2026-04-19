@@ -90,8 +90,8 @@ export default function EthiopiaTravelFinal() {
             { name: "Religion", img: "https://images.unsplash.com/photo-1597807132214-cd7d59a77714?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZXRoaW9waWFuJTIwc2l0ZXN8ZW58MHx8MHx8fDA%3D" },
             { name: "Wildlife", img: "https://images.unsplash.com/photo-1516426122078-c23e76319801?w=100&h=100&fit=crop" },
             { name: "Culture", img: "https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=100&h=100&fit=crop" },
-            { name: "History", img: "https://images.unsplash.com/photo-1596401057633-5310d5798d1d?w=100&h=100&fit=crop" },
-            { name: "Nature", img: "https://images.unsplash.com/photo-1571239328905-555e092cc632?w=100&h=100&fit=crop" }
+            { name: "History", img: "https://media.istockphoto.com/id/697529054/photo/the-church-of-saint-george-in-lalibela.webp?a=1&b=1&s=612x612&w=0&k=20&c=dBg19KDZyM0fpSri4GHZt7EQfOajmOlX1xkptf5eRZQ=" },
+            { name: "Nature", img: "https://images.unsplash.com/photo-1764145162259-04eaf2b3d86a?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8ZXRoaW9waWFuJTIwY3VsdHVyZXxlbnwwfHwwfHx8MA%3D%3D" }
           ].map((cat, i) => (
             <div key={i} className="flex-shrink-0 text-center group cursor-pointer">
               <div className="w-16 h-16 rounded-full overflow-hidden mb-2 p-1 border border-transparent group-hover:border-orange-500 transition-all shadow-sm">
@@ -107,8 +107,8 @@ export default function EthiopiaTravelFinal() {
       <section id="about" className="max-w-7xl mx-auto px-6 py-10 scroll-mt-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-2xl overflow-hidden bg-gray-50 border border-gray-100">
           <div className="p-10 lg:p-16 flex flex-col justify-center">
-            <span className="text-orange-500 font-bold uppercase tracking-widest text-[10px] mb-3">About Voyage</span>
-            <h2 className="text-3xl font-bold text-gray-900 mb-6 leading-tight uppercase">Explore the world with our expert guides</h2>
+            <span className="text-orange-500 font-bold uppercase tracking-widest text-[10px] mb-3">About Tourme</span>
+            <h2 className="text-3xl font-bold text-gray-900 mb-6 leading-tight uppercase">Explore with our expert guides</h2>
             <p className="text-gray-500 mb-8 leading-relaxed text-[14px]">
               We provide authentic Ethiopian experiences. From the mountains of Simien to the Danakil Depression, we guide you safely.
             </p>
@@ -152,9 +152,9 @@ export default function EthiopiaTravelFinal() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[
-            { name: "Rock-Hewn Churches", loc: "Lalibela", price: "$450", img: "https://images.unsplash.com/photo-1543888512-32b57563870e?w=500" },
-            { name: "Simien Mountains", loc: "Gondar", price: "$320", img: "https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=500" },
-            { name: "Blue Nile Falls", loc: "Bahir Dar", price: "$180", img: "https://images.unsplash.com/photo-1571239328905-555e092cc632?w=500" },
+            { name: "Rock-Hewn Churches", loc: "Lalibela", price: "$450", img: "https://media.istockphoto.com/id/2228817333/photo/ethiopian-nun-reading-holy-book-in-a-rock-hewn-church-in-lalibela.webp?a=1&b=1&s=612x612&w=0&k=20&c=jQV27gbwBXLpAyl0W2M7csLric7_Q6cSBCMLVZoYSdA=" },
+            { name: "Simien Mountains", loc: "Gondar", price: "$320", img: "https://media.istockphoto.com/id/1466420560/photo/view-of-the-blue-nile-falls-the-waterfall-of-the-blue-nile-river-is-situated-about-30.webp?a=1&b=1&s=612x612&w=0&k=20&c=kPoREEURgUPAbvI3CMXIt41bESk0jO4eeIud5TrNcdc=" },
+            { name: "Blue Nile Falls", loc: "Bahir Dar", price: "$180", img: "https://media.istockphoto.com/id/689359604/photo/simien-national-park.webp?a=1&b=1&s=612x612&w=0&k=20&c=GzJC4SoTmdVcyaB5rbMxlpcnYrRD8K75-3WcsVQMxWo=" },
             { name: "Fasil Ghebbi", loc: "Gondar", price: "$250", img: "https://images.unsplash.com/photo-1596401057633-5310d5798d1d?w=500" },
             { name: "Erta Ale Volcano", loc: "Afar", price: "$600", img: "https://images.unsplash.com/photo-1627315560341-94578f7f509e?w=500" },
             { name: "Omo Valley", loc: "Jinka", price: "$550", img: "https://images.unsplash.com/photo-1518331301490-264663675f3a?w=500" }

@@ -1,90 +1,41 @@
 "use client"
-
 import Link from "next/link";
 import Image from "next/image";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faStar } from "@fortawesome/free-solid-svg-icons";
-import { toast } from "sonner"; // Assuming you use sonner for toasts
-import { useState } from "react";
+import { MapPin, Heart } from "lucide-react";
 
-export default function TourCard({ tour, isInitiallyFavorite = false }) {
-  const [isFavorite, setIsFavorite] = useState(isInitiallyFavorite);
-
-  // 1. ADD THE TOGGLE LOGIC HERE
-  const handleToggleFavorite = async (e) => {
-    e.preventDefault(); // Stops the <Link> from navigating
-    e.stopPropagation(); // Stops the click from bubbling up
-
-    const token = localStorage.getItem("token");
-    if (!token) {
-      toast.error("Please login to save favorites");
-      return;
-    }
-
-    try {
-      const res = await fetch("/api/favorites/toggle", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        },
-        body: JSON.stringify({ tourId: tour.id }),
-      });
-
-      const data = await res.json();
-      if (data.success) {
-        setIsFavorite(data.isFavorite);
-        toast.success(data.message);
-      }
-    } catch (err) {
-      toast.error("Failed to update favorites");
-    }
-  };
-
+export default function TourCard({ tour }) {
   return (
-    <Link href={`/destinations/${tour.id}`} className="block">
-      <Card className="overflow-hidden group hover:shadow-xl transition-all duration-300 h-full cursor-pointer">
-        <div className="relative h-52 w-full">
-          <Image
-            src={tour.imageUrl || tour.image || "/placeholder-tour.jpg"}
-            alt={tour.title}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform"
-          />
-          
-          {/* 2. ADD THE ACTUAL BUTTON COMPONENT HERE */}
-          <button
-            onClick={handleToggleFavorite}
-            className={`absolute top-3 right-3 z-10 p-2 rounded-full backdrop-blur-sm transition-colors ${
-              isFavorite 
-                ? "bg-red-500 text-white" 
-                : "bg-white/80 text-slate-400 hover:text-red-500"
-            }`}
-          >
-            <FontAwesomeIcon icon={faHeart} />
-          </button>
+    <Link href={`/destinations/${tour.id}`} className="group bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all block">
+      <div className="h-56 overflow-hidden relative bg-gray-100">
+        <Image
+          src={tour.imageUrl || "https://images.unsplash.com/photo-1543888512-32b57563870e?w=500"}
+          alt={tour.title}
+          fill
+          className="object-cover group-hover:scale-105 transition duration-500"
+        />
+        <div 
+          className="absolute top-4 right-4 bg-white/80 p-1.5 rounded-full cursor-pointer hover:bg-orange-500 hover:text-white transition z-10"
+          onClick={(e) => {
+            e.preventDefault(); // Prevent navigating to destination
+            // Add favorite logic here if needed
+          }}
+        >
+          <Heart size={16} />
         </div>
-
-        <CardContent className="p-4">
-          <div className="flex justify-between items-start mb-3">
-            <h3 className="font-bold text-lg line-clamp-1">{tour.title}</h3>
-            <div className="flex items-center text-yellow-500 text-sm">
-              <FontAwesomeIcon icon={faStar} className="mr-1" />
-              <span>4.8</span>
-            </div>
-          </div>
-          <p className="text-slate-600 text-sm line-clamp-2 mb-4">
-            {tour.description}
-          </p>
-        </CardContent>
-
-        <CardFooter className="p-4 pt-0 flex justify-between items-center">
-          <span className="text-2xl font-bold text-blue-600">${tour.price}</span>
-          <Button size="sm">View Details</Button>
-        </CardFooter>
-      </Card>
+      </div>
+      <div className="p-5">
+        <div className="flex justify-between items-center mb-1">
+          <h3 className="font-bold text-gray-900 text-[16px] truncate pr-2">{tour.title}</h3>
+          <span className="text-orange-500 font-bold text-[14px] whitespace-nowrap">${tour.price}</span>
+        </div>
+        <div className="flex items-center text-gray-400 text-[12px] font-medium mb-5">
+          <MapPin size={12} className="mr-1 flex-shrink-0" /> 
+          <span className="truncate">{tour.location || 'Ethiopia'}</span>
+        </div>
+        <div className="w-full border border-gray-900 text-gray-900 group-hover:bg-orange-500 group-hover:border-orange-500 group-hover:text-white py-2.5 rounded font-bold text-[11px] transition-all tracking-wider uppercase text-center">
+          Explore Now
+        </div>
+      </div>
     </Link>
   );
 }

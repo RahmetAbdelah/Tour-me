@@ -137,7 +137,7 @@ export default function DashboardPage() {
           <div className="space-y-8">
             <div>
               <h2 className="text-2xl font-semibold mb-2">Welcome back, {user?.firstName}!</h2>
-              <p className="text-slate-600">Here's what's happening with your travel plans.</p>
+              <p className="text-slate-600">Here&aposs what$aposs happening with your travel plans.</p>
             </div>
 
             {/* Quick Stats */}
@@ -240,7 +240,7 @@ case 'explore':
                   <TourCard key={tour.id} tour={tour} />
                 ))
               ) : (
-                <p className="text-slate-500">You haven't favorited any tours yet.</p>
+                <p className="text-slate-500">You haven&apost favorited any tours yet.</p>
               )}
             </div>
           </div>
