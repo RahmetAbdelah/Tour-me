@@ -15,7 +15,9 @@ export default function NotFoundPage() {
 
         <CardContent className="grid gap-6">
           <p className="text-slate-600">
-            It seems like you've wandered off the beaten path. Don't worry, let's get you back to exploring amazing destinations!
+            It seems like you
+            &apos
+            ve wandered off the beaten path. Don't worry, let's get you back to exploring amazing destinations!
           </p>
 
           <div className="flex gap-4 justify-center">

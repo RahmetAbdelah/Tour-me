@@ -124,7 +124,7 @@ export default function DashboardPage() {
   const handleSignOut = () => {
     localStorage.removeItem("token")
     localStorage.removeItem("user")
-    toast.success("Signed out successfully")
+    Toaster.success("Signed out successfully")
     router.push("/auth/login")
   }
 

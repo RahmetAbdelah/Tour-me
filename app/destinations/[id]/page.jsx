@@ -71,7 +71,7 @@ export default function DestinationDetailPage() {
       const data = await res.json();
 
       if (data.success) {
-        toast.success("Booking created successfully! 🎉");
+        toast.success("Booking created successfully! ");
         // Optional: redirect to bookings page
         // router.push("/dashboard?section=bookings");
       } else {

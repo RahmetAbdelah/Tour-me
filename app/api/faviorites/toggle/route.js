@@ -20,7 +20,7 @@ export async function POST(req) {
       await prisma.favorite.delete({ where: { id: existing.id } });
       return NextResponse.json({ success: true, message: "Removed from favorites", isFavorite: false });
     } else {
-      // 3. Add it
+      
       await prisma.favorite.create({
         data: { userId, tourId }
       });

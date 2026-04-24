@@ -10,9 +10,30 @@ import {
 
 export default function EthiopiaTravelFinal() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isPlayingAbout, setIsPlayingAbout] = useState(false);
+  const [showAboutVideo, setShowAboutVideo] = useState(false);
+  
+  // 1. STATE FOR ROTATING TEXT
+  const [textIndex, setTextIndex] = useState(0);
+  const [fade, setFade] = useState(true);
+  const phrases = ["Next Adventure", "Cultural Journey", "Historic Discovery", "Safari Experience"];
 
-  // Smooth scroll function for the Nav
-  const scrollToSection = (id,string) => {
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFade(false); // Start fade out
+      
+      setTimeout(() => {
+        setTextIndex((prevIndex) => (prevIndex + 1) % phrases.length);
+        setFade(true); // Start fade in
+      }, 500); // Wait for fade out animation to finish
+
+    }, 1500); // Change text every 3.5 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const scrollToSection = (id) => {
     const element = document.getElementById(id);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth' });
@@ -20,10 +41,12 @@ export default function EthiopiaTravelFinal() {
     setIsMenuOpen(false);
   };
 
+
+
   return (
     <div className="min-h-screen bg-white font-sans text-slate-800 antialiased overflow-x-hidden">
       
-      {/* 1. NAVIGATION BAR - Now Navigable */}
+      {/* 1. NAVIGATION BAR */}
       <nav className="fixed top-0 w-full z-[100] bg-white border-b border-gray-100 h-16 flex items-center">
         <div className="max-w-7xl mx-auto px-6 w-full flex items-center justify-between">
           <div 
@@ -59,7 +82,7 @@ export default function EthiopiaTravelFinal() {
         )}
       </nav>
 
-      {/* 2. HERO SECTION - Full Screen, Video Only, No Search Bar */}
+     
       <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
         <iframe
           src="https://www.youtube.com/embed/1xuzWBxlwCk?autoplay=1&mute=1&controls=0&loop=1&playlist=1xuzWBxlwCk&showinfo=0&rel=0&disablekb=1"
@@ -72,19 +95,27 @@ export default function EthiopiaTravelFinal() {
         <div className="absolute inset-0 bg-black/20 z-10" />
 
         <div className="relative z-20 text-center px-4 max-w-4xl">
-          <h1 className="text-2xl md:text-4xl lg:text-6xl font-bold mb-8 tracking-tight leading-tight text-white drop-shadow-lg">
-            Ready For Your <br /> Next Adventure
-          </h1>
+          <h2 className="text-2xl md:text-4xl lg:text-6xl font-bold mb-8 tracking-tight leading-tight text-white drop-shadow-lg">
+            Ready For Your <br />
+           <span className={`inline-block transition-all duration-500 transform ${fade ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'} text-orange-500`}>
+              {phrases[textIndex]}
+            </span>
+          </h2>
           
-          <button onClick={() => scrollToSection('destinations')} className="bg-orange-500 hover:bg-orange-600 text-white px-10 py-4 rounded-full text-sm font-bold transition-all shadow-2xl shadow-orange-500/40 hover:scale-105 uppercase tracking-widest">
-            Get Started
-          </button>
+         <Link href="app/auth/login" className="inline-block">
+  <button className="relative group overflow-hidden bg-orange-500 hover:bg-orange-600 text-white px-7 py-2.5 rounded-full text-[11px] font-bold transition-all shadow-xl hover:scale-105 uppercase tracking-widest border border-orange-400/30">
+    {/* The Shining Streak */}
+    <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-shimmer" />
+    
+    <span className="relative z-10">Get Started</span>
+  </button>
+</Link>
         </div>
       </section>
 
       {/* 3. CATEGORY ICONS */}
       <section className="max-w-7xl mx-auto px-6 py-12">
-        <div className="flex justify-between items-center gap-4 overflow-x-auto no-scrollbar">
+        <div className="flex justify-between items-center gap-6 overflow-x-auto no-scrollbar">
           {[
             { name: "Hiking", img: "https://images.unsplash.com/photo-1551632811-561732d1e306?w=100&h=100&fit=crop" },
             { name: "Religion", img: "https://images.unsplash.com/photo-1597807132214-cd7d59a77714?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8ZXRoaW9waWFuJTIwc2l0ZXN8ZW58MHx8MHx8fDA%3D" },
@@ -103,39 +134,73 @@ export default function EthiopiaTravelFinal() {
         </div>
       </section>
 
-      {/* 4. PROMO SECTION - ID: about */}
-      <section id="about" className="max-w-7xl mx-auto px-6 py-10 scroll-mt-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-2xl overflow-hidden bg-gray-50 border border-gray-100">
-          <div className="p-10 lg:p-16 flex flex-col justify-center">
-            <span className="text-orange-500 font-bold uppercase tracking-widest text-[10px] mb-3">About Tourme</span>
-            <h2 className="text-3xl font-bold text-gray-900 mb-6 leading-tight uppercase">Explore with our expert guides</h2>
-            <p className="text-gray-500 mb-8 leading-relaxed text-[14px]">
-              We provide authentic Ethiopian experiences. From the mountains of Simien to the Danakil Depression, we guide you safely.
-            </p>
-            <div className="grid grid-cols-2 gap-4 mb-8">
-              <div className="flex items-center gap-2 text-[13px] font-semibold">
-                <CheckCircle2 className="text-orange-500" size={16} />
-                <span>Expert Guides</span>
-              </div>
-              <div className="flex items-center gap-2 text-[13px] font-semibold">
-                <CheckCircle2 className="text-orange-500" size={16} />
-                <span>Luxury Tours</span>
-              </div>
-            </div>
-            <button className="bg-orange-500 text-white px-6 py-2.5 rounded text-[11px] font-bold w-fit uppercase tracking-wider">
-              Learn More
+     <section id="about" className="max-w-7xl mx-auto px-6 py-10 scroll-mt-20">
+  <div className="grid grid-cols-1 lg:grid-cols-2 gap-0 rounded-2xl overflow-hidden bg-gray-50 border border-gray-100">
+    
+    {/* Left Content Side */}
+    <div className="p-10 lg:p-16 flex flex-col justify-center">
+      <span className="text-orange-500 font-bold uppercase tracking-widest text-[10px] mb-3">About Tourme</span>
+      <h2 className="text-3xl font-bold text-gray-900 mb-6 leading-tight uppercase">Explore with our expert guides</h2>
+      <p className="text-gray-500 mb-8 leading-relaxed text-[14px]">
+        We provide authentic Ethiopian experiences. From the mountains of Simien to the Danakil Depression, we guide you safely.
+      </p>
+      <div className="grid grid-cols-2 gap-4 mb-8">
+        <div className="flex items-center gap-2 text-[13px] font-semibold">
+          <CheckCircle2 className="text-orange-500" size={16} />
+          <span>Expert Guides</span>
+        </div>
+        <div className="flex items-center gap-2 text-[13px] font-semibold">
+          <CheckCircle2 className="text-orange-500" size={16} />
+          <span>Luxury Tours</span>
+        </div>
+      </div>
+      <button className="bg-orange-500 text-white px-6 py-2.5 rounded text-[11px] font-bold w-fit uppercase tracking-wider">
+        Learn More
+      </button>
+    </div>
+
+    {/* Right Video Side */}
+    <div className="relative h-72 lg:h-auto min-h-[350px] bg-black">
+      {!isPlayingAbout ? (
+        // SHOW THIS BEFORE CLICKING PLAY
+        <div className="relative w-full h-full group">
+          <img 
+            src="https://images.unsplash.com/photo-1523805009345-7448845a9e53?q=80" 
+            className="w-full h-full object-cover transition-opacity duration-500 group-hover:opacity-80" 
+            alt="About Video Thumbnail" 
+          />
+          <div className="absolute inset-0 flex items-center justify-center bg-black/10">
+            <button 
+              onClick={() => setIsPlayingAbout(true)}
+              className="w-16 h-16 bg-white/95 rounded-full flex items-center justify-center shadow-2xl cursor-pointer hover:scale-110 hover:bg-orange-500 transition-all group/btn"
+            >
+              <Play className="text-orange-500 group-hover/btn:text-white fill-current ml-1" size={24} />
             </button>
           </div>
-          <div className="relative h-64 lg:h-auto">
-            <img src="https://images.unsplash.com/photo-1523805009345-7448845a9e53?q=80" className="w-full h-full object-cover" alt="" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-14 h-14 bg-white/90 rounded-full flex items-center justify-center shadow-lg cursor-pointer hover:scale-105 transition">
-                <Play className="text-orange-500 fill-orange-500" size={20} />
-              </div>
-            </div>
-          </div>
         </div>
-      </section>
+      ) : (
+       
+        <div className="w-full h-full">
+          <iframe
+            src="https://www.youtube.com/shorts/MLllLKSUMQY?feature=share"
+            title="Ethiopia Travel Video"
+            className="w-full h-full absolute inset-0"
+            allow="autoplay; encrypted-media; picture-in-picture"
+            allowFullScreen
+          />
+          {/* Optional: Close Button to stop video */}
+          <button 
+            onClick={() => setIsPlayingAbout(false)}
+            className="absolute top-4 right-4 z-30 bg-black/50 text-white p-1 rounded-full hover:bg-orange-500 transition"
+          >
+            <X size={20} />
+          </button>
+        </div>
+      )}
+    </div>
+
+  </div>
+</section>
 
       {/* 5. DESTINATION GRID - ID: destinations */}
       <section id="destinations" className="max-w-[1600px] mx-auto px-4 md:px-12 py-16 scroll-mt-20">
@@ -155,9 +220,9 @@ export default function EthiopiaTravelFinal() {
             { name: "Rock-Hewn Churches", loc: "Lalibela", price: "$450", img: "https://media.istockphoto.com/id/2228817333/photo/ethiopian-nun-reading-holy-book-in-a-rock-hewn-church-in-lalibela.webp?a=1&b=1&s=612x612&w=0&k=20&c=jQV27gbwBXLpAyl0W2M7csLric7_Q6cSBCMLVZoYSdA=" },
             { name: "Simien Mountains", loc: "Gondar", price: "$320", img: "https://media.istockphoto.com/id/1466420560/photo/view-of-the-blue-nile-falls-the-waterfall-of-the-blue-nile-river-is-situated-about-30.webp?a=1&b=1&s=612x612&w=0&k=20&c=kPoREEURgUPAbvI3CMXIt41bESk0jO4eeIud5TrNcdc=" },
             { name: "Blue Nile Falls", loc: "Bahir Dar", price: "$180", img: "https://media.istockphoto.com/id/689359604/photo/simien-national-park.webp?a=1&b=1&s=612x612&w=0&k=20&c=GzJC4SoTmdVcyaB5rbMxlpcnYrRD8K75-3WcsVQMxWo=" },
-            { name: "Fasil Ghebbi", loc: "Gondar", price: "$250", img: "https://images.unsplash.com/photo-1596401057633-5310d5798d1d?w=500" },
-            { name: "Erta Ale Volcano", loc: "Afar", price: "$600", img: "https://images.unsplash.com/photo-1627315560341-94578f7f509e?w=500" },
-            { name: "Omo Valley", loc: "Jinka", price: "$550", img: "https://images.unsplash.com/photo-1518331301490-264663675f3a?w=500" }
+            { name: "Fasil Ghebbi", loc: "Gondar", price: "$250", img: "https://media.istockphoto.com/id/1316729047/photo/ethiopian-architecture-in-gondar.webp?a=1&b=1&s=612x612&w=0&k=20&c=V6v3Q5X5X5X5X5X5X5X5X5X5X5X5X5X5X5X5X5X5=" },
+            { name: "Erta Ale Volcano", loc: "Afar", price: "$600", img: "https://media.istockphoto.com/id/697529054/photo/the-church-of-saint-george-in-lalibela.webp?a=1&b=1&s=612x612&w=0&k=20&c=dBg19KDZyM0fpSri4GHZt7EQfOajmOlX1xkptf5eRZQ=" },
+            { name: "Omo Valley", loc: "Jinka", price: "$550", img: "https://images.unsplash.com/photo-1764145162259-04eaf2b3d86a?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8ZXRoaW9waWFuJTIwY3VsdHVyZXxlbnwwfHwwfHx8MA%3D%3D" }
           ].map((dest, i) => (
             <div key={i} className="group bg-white rounded-xl overflow-hidden border border-gray-100 shadow-sm hover:shadow-md transition-all">
               <div className="h-56 overflow-hidden relative">
